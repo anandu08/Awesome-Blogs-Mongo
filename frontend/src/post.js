@@ -1,21 +1,28 @@
-function Post() {
+import { Link } from "react-router-dom"
+import { format } from "date-fns";
+function Post(props) {
+
     return (
         <div className="post">
-            <div className="postpreview">
-                <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/0*TgZX36F5qSCxPm7E.jpg" alt="" /></div>
+
+            <Link to={`/post/${props._id}`}>
+                <img src={`http://localhost:4000/${props.cover}`} alt="" />
+            </Link>
 
             <div className="texts">
-                <h2>Roadmap to become a Pro Web Developer</h2>
-                <p className="info">
-                    <span className="author">Unknown</span>
-                    <time>18-03-2023</time>
-                </p>
-                <p className="summary">The US Bureau of Labour Statistics projects a 13% growth in job opportunities in the field.</p>
+                <Link to={`/post/${props._id}`}>
+                    <h2>{props.title}</h2>
+                </Link>
 
+                <p className="info">
+                    <span className="author">{props.author.username}</span>
+                    <time>{format(new Date(props.createdAt), 'd MMM, yyyy HH:mm')}</time>
+                </p>
+                <p className="summary">{props.summary}</p>
             </div>
 
         </div>
-    )
+    );
 }
 
 export default Post;
