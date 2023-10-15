@@ -28,7 +28,7 @@ function Header() {
 
   return (
     <header>
-      <Link to="/" className='logo'> Hello</Link>
+      <Link to="/" className='logo'> Awesome Blogs</Link>
 
       <nav>
         {username &&
