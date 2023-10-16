@@ -6,7 +6,7 @@ function Post(props) {
         <div className="post">
 
             <Link to={`/post/${props._id}`}>
-                <img src={`https://awesome-blogs-server.vercel.app/${props.cover}`} alt="" />
+                <img src={``} alt="" />
             </Link>
 
             <div className="texts">
