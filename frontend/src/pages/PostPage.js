@@ -9,7 +9,7 @@ export default function PostPage() {
     const { userInfo } = useContext(UserContext);
     const { id } = useParams();
     useEffect(() => {
-        fetch(`http://localhost:4000/post/${id}`)
+        fetch(`https://awesome-blogs.vercel.app/post/${id}`)
             .then(response => {
                 response.json().then(postInfo => {
                     setPostInfo(postInfo);
@@ -36,7 +36,7 @@ export default function PostPage() {
             )}
             <div className="image">
 
-                <img src={`http://localhost:4000/${postInfo.cover}`} alt="" />
+                <img src={`https://awesome-blogs.vercel.app/${postInfo.cover}`} alt="" />
             </div>
 
 

@@ -5,6 +5,7 @@ const connectToMongo = require("./mongoconnect");
 const User = require("./models/user");
 const bcrypt = require('bcryptjs');
 const Post = require('./models/post');
+require('dotenv').config(); 
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser")
@@ -14,7 +15,7 @@ const fs = require('fs')
 const uploader = multer({ dest: 'uploads/' });
 
 var salt = bcrypt.genSaltSync(10);
-var secret = "somerandomdfsfjalfdlfjl";
+var secret = process.env.SECRET_KEY;
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(express.json());
 app.use(cookieParser());

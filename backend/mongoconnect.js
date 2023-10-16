@@ -1,8 +1,8 @@
 const colors = require('colors');
 const mongoose = require('mongoose')
+require('dotenv').config(); 
 
-
-const mongoURL = "mongodb://localhost:27017/Awesome-Blogs"
+const mongoURL = process.env.MONGO_URI;
 const connectToMongo = () => {
 
     mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })
