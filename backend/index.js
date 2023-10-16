@@ -18,9 +18,10 @@ var salt = bcrypt.genSaltSync(10);
 var secret = process.env.SECRET_KEY;
 app.use(cors({
     credentials: true,
-    origin: ['https://awesome-blogs.vercel.app'],
+    origin: 'https://awesome-blogs.vercel.app',
     methods: ["POST", "GET"],
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
