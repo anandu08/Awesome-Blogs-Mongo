@@ -187,6 +187,6 @@ app.put('/edit', uploader.single('file'), async (req, res) => {
     });
 
 });
-app.listen(4000, () => {
-    console.log("Server started at port 4000")
+app.listen(process.env.PORT || 4000, () => {
+    console.log("Server started")
 });
