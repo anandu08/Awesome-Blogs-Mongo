@@ -93,7 +93,7 @@ app.post('/logout', (req, res) => {
 })
 
 
-app.post('/post', uploader.single('file'), (req, res) => {
+app.post('/post', (req, res) => {
     const { originalname, path } = req.file;
     const parts = originalname.split('.');
     const ext = parts[parts.length - 1];
@@ -150,7 +150,7 @@ app.get('/post/:id', async (req, res) => {
 
 })
 
-app.put('/edit', uploader.single('file'), async (req, res) => {
+app.put('/edit', async (req, res) => {
     let newPath = null;
 
     if (req.file) {
