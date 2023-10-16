@@ -5,7 +5,7 @@ const connectToMongo = require("./mongoconnect");
 const User = require("./models/user");
 const bcrypt = require('bcryptjs');
 const Post = require('./models/post');
-require('dotenv').config(); 
+require('dotenv').config();
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser")
@@ -16,7 +16,7 @@ const uploader = multer({ dest: 'uploads/' });
 
 var salt = bcrypt.genSaltSync(10);
 var secret = process.env.SECRET_KEY;
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: 'https://awesome-blogs.vercel.app' }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
@@ -149,7 +149,7 @@ app.put('/edit', uploader.single('file'), async (req, res) => {
     let newPath = null;
 
     if (req.file) {
-       
+
         const { originalname, path } = req.file;
         const parts = originalname.split('.');
         const ext = parts[parts.length - 1];
