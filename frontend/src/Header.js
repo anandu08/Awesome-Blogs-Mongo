@@ -5,7 +5,7 @@ import { UserContext } from "./UserContext";
 function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
   useEffect(() => {
-    fetch('https://awesome-blogs.vercel.app/profile', {
+    fetch('https://awesome-blogs-server.vercel.app/profile', {
       credentials: 'include',
 
     }).then(response => {
@@ -18,7 +18,7 @@ function Header() {
 
   function logout() {
 
-    fetch('https://awesome-blogs.vercel.app/logout', {
+    fetch('https://awesome-blogs-server.vercel.app/logout', {
       method: "POST",
 
     });

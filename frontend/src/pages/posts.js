@@ -5,7 +5,7 @@ export default function Posts() {
     const [posts, setPosts] = useState([]);
     useEffect(() => {
 
-        fetch('https://awesome-blogs.vercel.app/posts').then(response => {
+        fetch('https://awesome-blogs-server.vercel.app/posts').then(response => {
             response.json().then(posts => {
                 setPosts(posts);
             })
