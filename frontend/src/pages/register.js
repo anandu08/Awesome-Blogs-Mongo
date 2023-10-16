@@ -6,7 +6,7 @@ export default function Register() {
     async function register(event) {
 
         event.preventDefault();
-        const response = await fetch('https://awesome-blogs.vercel.app/register', {
+        const response = await fetch('https://awesome-blogs-server.vercel.app/register', {
             method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: { 'Content-Type': 'application/json' },
