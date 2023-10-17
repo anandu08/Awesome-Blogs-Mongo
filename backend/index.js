@@ -12,7 +12,7 @@ const cookieParser = require("cookie-parser")
 const multer = require('multer')
 const fs = require('fs')
 
-// const uploader = multer({ dest: 'uploads/' });
+const uploader = multer({ dest: 'uploads/' });
 
 var salt = bcrypt.genSaltSync(10);
 var secret = process.env.SECRET_KEY;
@@ -24,7 +24,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser());
-// app.use('/uploads', express.static(__dirname + '/uploads'));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 
 connectToMongo();
@@ -81,11 +81,12 @@ app.post("/login", async (req, res) => {
 app.get("/profile", (req, res) => {
     const { token } = req.cookies;
     jwt.verify(token, secret, {}, (err, info) => {
-        if (err)
-            throw err;
+        if (err) {
+            console.error(err);
+            return res.status(401).json({ error: 'Invalid token' }); // Send an error response
+        }
         res.json(info);
     });
-
 });
 
 app.post('/logout', (req, res) => {
@@ -93,7 +94,7 @@ app.post('/logout', (req, res) => {
 })
 
 
-app.post('/post', (req, res) => {
+app.post('/post', uploader.single('file'), (req, res) => {
     const { originalname, path } = req.file;
     const parts = originalname.split('.');
     const ext = parts[parts.length - 1];
@@ -111,7 +112,7 @@ app.post('/post', (req, res) => {
                 title: title,
                 summary: summary,
                 content: content,
-                cover: "",
+                cover: newPath,
                 author: info.id
             });
 
@@ -150,7 +151,7 @@ app.get('/post/:id', async (req, res) => {
 
 })
 
-app.put('/edit', async (req, res) => {
+app.put('/edit', uploader.single('file'), async (req, res) => {
     let newPath = null;
 
     if (req.file) {
