@@ -1,8 +1,11 @@
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import { Navigate } from 'react-router-dom';
-
 import 'react-quill/dist/quill.snow.css'
+
+
+
+
 const modules = {
     toolbar: [
         [{ 'header': [1, 2, false] }],
@@ -27,25 +30,49 @@ export default function CreatePost() {
     const [redirect, setRedirect] = useState(false);
 
     async function createNew(event) {
-        const data = new FormData();
-
-        data.set('title', title);
-        data.set('summary', summary);
-        data.set('content', content);
-        data.set('file', files[0]);
-
         event.preventDefault();
+
+        const data = {
+            title: title,
+            summary: summary,
+            content: content,
+            cover: "",
+        };
+        let image_url = "";
+        if (files && files.length > 0) {
+            const formData = new FormData();
+            formData.append('file', files[0]);
+            formData.append('upload_preset', 'Awesome-blogs');
+
+            const response = await fetch(
+                `https://api.cloudinary.com/v1_1/dytmgavdk/image/upload`,
+                {
+                    method: 'POST',
+                    body: formData,
+                }
+            );
+            const cloudinaryData = await response.json();
+            image_url = cloudinaryData.secure_url
+
+        }
+        data['cover'] = image_url;
+        console.log(data);
         const response = await fetch('https://awesome-blogs-server.vercel.app/post', {
             method: 'POST',
-            body: data,
+            body: JSON.stringify(data),
             credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
 
-        if (response.ok) {
 
-            setRedirect(true)
+
+        if (response.ok) {
+            setRedirect(true);
         }
     }
+
 
     if (redirect) {
         return (<Navigate to={'/'}></Navigate>)
@@ -61,7 +88,7 @@ export default function CreatePost() {
                 value={summary}
                 onChange={event => { setSummary(event.target.value) }} />
 
-            <input type='file'
+            <input type='file' name='file'
                 onChange={ev => { setFile(ev.target.files) }} />
 
             <ReactQuill value={content} modules={modules} formats={formats}
@@ -71,3 +98,4 @@ export default function CreatePost() {
         </form>
     );
 }
+
