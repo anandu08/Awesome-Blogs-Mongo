@@ -9,7 +9,6 @@ require('dotenv').config();
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser")
-const multer = require('multer')
 const fs = require('fs')
 
 const uploader = multer({ dest: 'uploads/' });
