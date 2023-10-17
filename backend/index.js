@@ -11,8 +11,6 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser")
 const fs = require('fs')
 
-const uploader = multer({ dest: 'uploads/' });
-
 var salt = bcrypt.genSaltSync(10);
 var secret = process.env.SECRET_KEY;
 app.use(cors({
