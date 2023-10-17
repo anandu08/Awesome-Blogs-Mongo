@@ -7,21 +7,24 @@ const bcrypt = require('bcryptjs');
 const Post = require('./models/post');
 require('dotenv').config();
 
+app.use(express.json());
+
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser")
-const fs = require('fs')
+
 
 var salt = bcrypt.genSaltSync(10);
 var secret = process.env.SECRET_KEY;
+
 app.use(cors({
     credentials: true,
     origin: 'https://awesome-blogs.vercel.app',
     methods: ["POST", "GET"],
 }));
 
-app.use(express.json());
+
 app.use(cookieParser());
-app.use('/uploads', express.static(__dirname + '/uploads'));
+
 
 
 connectToMongo();
@@ -77,6 +80,11 @@ app.post("/login", async (req, res) => {
 
 app.get("/profile", (req, res) => {
     const { token } = req.cookies;
+    if(!token)
+    {
+        console.log("Not logged in");
+        return ;
+    }
     jwt.verify(token, secret, {}, (err, info) => {
         if (err) {
             console.error(err);
@@ -91,25 +99,21 @@ app.post('/logout', (req, res) => {
 })
 
 
-app.post('/post', uploader.single('file'), (req, res) => {
-    const { originalname, path } = req.file;
-    const parts = originalname.split('.');
-    const ext = parts[parts.length - 1];
-    newPath = path + '.' + ext;
-    fs.renameSync(path, newPath);
-
+app.post('/post', (req, res) => {
+    console.log(req.body)
     const { token } = req.cookies;
     jwt.verify(token, secret, {}, async (err, info) => {
         if (err)
             throw err;
 
-        const { title, summary, content } = req.body;
+        const { title, summary, content, cover } = req.body;
+        
         try {
             const PostDoc = await Post.create({
                 title: title,
                 summary: summary,
                 content: content,
-                cover: newPath,
+                cover: cover,
                 author: info.id
             });
 
@@ -148,46 +152,12 @@ app.get('/post/:id', async (req, res) => {
 
 })
 
-app.put('/edit', uploader.single('file'), async (req, res) => {
-    let newPath = null;
+app.put('/edit', async (req, res) => {
 
-    if (req.file) {
 
-        const { originalname, path } = req.file;
-        const parts = originalname.split('.');
-        const ext = parts[parts.length - 1];
-        newPath = path + '.' + ext;
-        fs.renameSync(path, newPath);
-    }
 
-    const { token } = req.cookies;
-    jwt.verify(token, secret, {}, async (err, info) => {
-        if (err) throw err;
-        const { id, title, summary, content } = req.body;
-        const postDoc = await Post.findById(id);
 
-        if (!postDoc) {
-            return res.json("No Post found ");
-
-        }
-        const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
-        if (!isAuthor) {
-            return res.status(400).json('You are not the author!!!');
-        }
-        postDoc.title = title;
-        postDoc.summary = summary;
-        postDoc.content = content;
-        postDoc.cover = newPath ? newPath : postDoc.cover;
-
-        try {
-            await postDoc.save();
-            res.json(postDoc);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-
-    });
+   res.send("under Construction");
 
 });
 app.listen(process.env.PORT || 4000, () => {
