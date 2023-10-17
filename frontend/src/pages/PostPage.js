@@ -36,7 +36,7 @@ export default function PostPage() {
             )}
             <div className="image">
 
-                <img src={`https://awesome-blogs-server.vercel.app/${postInfo.cover}`} alt="" />
+                <img src={postInfo.cover} alt="" />
             </div>
 
 
