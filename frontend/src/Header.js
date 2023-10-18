@@ -5,16 +5,26 @@ import { UserContext } from "./UserContext";
 function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
   useEffect(() => {
-    fetch('https://awesome-blogs-server.vercel.app/profile', {
-      credentials: 'include',
+    async function fetchData() {
+        try {
+            const response = await  fetch('https://awesome-blogs-server.vercel.app/profile', {
+                credentials: 'include',
+            });
 
-    }).then(response => {
-      response.json().then(userInfo => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-        setUserInfo(userInfo.username);
-      })
-    })
-  }, []);
+            const userInfoData = await response.json();
+            setUserInfo(userInfoData.username);
+        } catch (error) {
+            console.error('Error fetching user info:', error);
+        }
+    }
+
+    fetchData();
+}, []);
+
 
   function logout() {
 
