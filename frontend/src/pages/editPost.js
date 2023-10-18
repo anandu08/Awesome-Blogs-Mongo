@@ -41,26 +41,46 @@ export default function EditPost() {
 
     async function edit(ev) {
         ev.preventDefault();
-        const data = new FormData();
-        data.set('title', title);
-        data.set('summary', summary);
-        data.set('content', content);
-        data.set('id', id);
+        const data = {
+            title: title,
+            summary: summary,
+            content: content,
+            cover: null,
+        };
+        let image_url = null;
 
         if (files?.[0]) {
-            data.set('file', files?.[0]);
+            const formData = new FormData();
+            formData.append('file', files[0]);
+            formData.append('upload_preset', 'Awesome-blogs');
+
+            const response = await fetch(
+                `https://api.cloudinary.com/v1_1/dytmgavdk/image/upload`,
+                {
+                    method: 'POST',
+                    body: formData,
+                }
+            );
+
+            const cloudinaryData = await response.json();
+            image_url = cloudinaryData.secure_url;
         }
+        data['cover'] = image_url;
+
         const response = await fetch('https://awesome-blogs-server.vercel.app/edit', {
             method: 'PUT',
-            body: data,
+            body: JSON.stringify(data),
             credentials: 'include',
-
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
 
-        if (response.ok)
+        if (response.ok) {
             setRedirect(true);
-
+        }
     }
+
 
     if (redirect) {
         return <Navigate to={'/post/' + id} />
