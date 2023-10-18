@@ -42,6 +42,7 @@ export default function EditPost() {
     async function edit(ev) {
         ev.preventDefault();
         const data = {
+            id: id,
             title: title,
             summary: summary,
             content: content,
