@@ -1,24 +1,35 @@
-import { useState } from "react";
-
+import { useContext, useState } from "react";
+import { Navigate } from "react-router-dom";
+import { UserContext } from "../UserContext";
 export default function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-  
+    const [redirect, setRedirect] = useState(false);
+    const { setUserInfo } = useContext(UserContext)
+
     async function register(event) {
 
         event.preventDefault();
-        const response = await fetch('https://awesome-blogs-server.vercel.app/register', {
+     const response = await fetch('https://awesome-blogs-server.vercel.app/register', {
             method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: { 'Content-Type': 'application/json' },
         })
         if (response.status !== 200) {
-            alert("Registration Failed Consider registering with a different username");
+            alert("Registration Failed Consider trying with a different username");
+        }
+        else if (response.ok) {
+            response.json().then(userInfo => {
+                setUserInfo(userInfo);
+                setRedirect(true);
+            })
         }
         else {
-            alert("Registration Succeeded you may Login now")//new code
-            console.log("Registration Succeeded");
+            console.log(response);
         }
+    }
+    if (redirect) {
+        return <Navigate to={'/'} />
     }
     return (
 
