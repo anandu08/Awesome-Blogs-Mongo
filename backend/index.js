@@ -43,7 +43,7 @@ app.post("/register", async (req, res) => {
 
         jwt.sign({ username, id: user._id }, secret, {}, (err, token) => {
             if (err) throw err;
-            res.cookie('token', token, { sameSite: 'None', secure: true, maxAge: 3600000 }).json({
+            res.cookie('token', token, { sameSite: 'None', secure: true }).json({
                 id: user._id,
                 username,
             });
@@ -68,7 +68,7 @@ app.post("/login", async (req, res) => {
             jwt.sign({ username, id: UserDoc._id }, secret, {}, (err, token) => {
                 if (err)
                     throw err;
-                res.cookie('token', token, { sameSite: 'None', secure: true, maxAge: 3600000 }).json({
+                res.cookie('token', token, { sameSite: 'None', secure: true }).json({
             id: UserDoc._id,
             username,
         });
