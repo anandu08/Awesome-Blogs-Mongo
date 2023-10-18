@@ -155,9 +155,35 @@ app.get('/post/:id', async (req, res) => {
 app.put('/edit', async (req, res) => {
 
 
+    const { token } = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) throw err;
 
+        const { id, title, summary, content, cover } = req.body;
+        const postDoc = await Post.findById(id);
 
-   res.send("under Construction");
+        if (!postDoc) {
+            return res.json("No Post found ");
+
+        }
+        const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+        if (!isAuthor) {
+            return res.status(400).json('You are not the author!!!');
+        }
+        postDoc.title = title;
+        postDoc.summary = summary;
+        postDoc.content = content;
+        postDoc.cover = cover ? cover : postDoc.cover;
+
+        try {
+            await postDoc.save();
+            res.json(postDoc);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+    });
 
 });
 app.listen(process.env.PORT || 4000, () => {
