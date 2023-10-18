@@ -91,13 +91,15 @@ app.get("/profile", (req, res) => {
         console.log("Not logged in");
         return res.status(401).json({ error: 'Not logged in' });
     }
-  jwt.verify(token, secret, {}, (err, info) => {
+ jwt.verify(token, secret, {}, (err, info) => {
+    console.log('Token payload:', info);
     if (err) {
         console.error('Error verifying token:', err);
-        return res.status(401).json({ error: 'Invalid token' }); // Send an error response
+        return res.status(401).json({ error: 'Invalid token' });
     }
     res.json(info);
 });
+
 });
 
 app.post('/logout', (req, res) => {
