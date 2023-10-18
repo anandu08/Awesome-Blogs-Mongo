@@ -11,9 +11,10 @@ export default function Register() {
 
         event.preventDefault();
      const response = await fetch('https://awesome-blogs-server.vercel.app/register', {
-            method: 'POST',
+           method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
         })
         if (response.status !== 200) {
             alert("Registration Failed Consider trying with a different username");
