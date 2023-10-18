@@ -3,26 +3,28 @@ import Post from "./post";
 
 export default function Posts() {
     const [posts, setPosts] = useState([]);
-    useEffect(() => {
+    const [loading, setLoading] = useState(true);
 
-      fetch('https://awesome-blogs-server.vercel.app/posts').then(response => {
+    useEffect(() => {
+        fetch('https://awesome-blogs-server.vercel.app/posts').then(response => {
             response.json().then(posts => {
                 setPosts(posts);
+                setLoading(false); // Set loading to false after fetch is complete
             })
         })
     }, []);
 
-    if (posts.length == 0)
-        return (<> No Posts found, Login to create one!!!</>)
+    if (loading) {
+        return <>Loading...</>;
+    }
+
+    if (posts.length === 0) {
+        return <>No Posts found, Login to create one!!!</>;
+    }
+
     return (
         <>
-            {
-                posts.length > 0 && posts.map(post => (<Post {...post} />))
-            }
-
+            {posts.map(post => (<Post key={post._id} {...post} />))}
         </>
-
-
     );
-
 }
