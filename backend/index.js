@@ -86,19 +86,18 @@ app.post("/login", async (req, res) => {
 })
 
 app.get("/profile", (req, res) => {
-    const { token } = req.cookies;
-    if(!token)
-    {
+   const { token } = req.cookies;
+    if (!token) {
         console.log("Not logged in");
-        return ;
+        return res.status(401).json({ error: 'Not logged in' });
     }
-    jwt.verify(token, secret, {}, (err, info) => {
-        if (err) {
-            console.error(err);
-            return res.status(401).json({ error: 'Invalid token' }); // Send an error response
-        }
-        res.json(info);
-    });
+  jwt.verify(token, secret, {}, (err, info) => {
+    if (err) {
+        console.error('Error verifying token:', err);
+        return res.status(401).json({ error: 'Invalid token' }); // Send an error response
+    }
+    res.json(info);
+});
 });
 
 app.post('/logout', (req, res) => {
