@@ -16,7 +16,7 @@ export default function Register() {
             alert("Registration Failed Consider registering with a different username");
         }
         else {
-            alert("Registration Succeeded you may Login now")
+            alert("Registration Succeeded you may Login now")//new code
             console.log("Registration Succeeded");
         }
     }
