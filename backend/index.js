@@ -19,7 +19,7 @@ var secret = process.env.SECRET_KEY;
 app.use(cors({
     credentials: true,
     origin: 'https://awesome-blogs.vercel.app',
-    methods: ["POST", "GET"],
+    methods: ["POST", "GET","PUT"],
 }));
 
 
