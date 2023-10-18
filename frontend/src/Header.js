@@ -4,9 +4,10 @@ import { UserContext } from "./UserContext";
 
 function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
-  useEffect( async () => {
+  const [loading,setLoading] = useState(true);
+  useEffect(() => {
     async function fetchData() {
-        try {
+        try  {
             const response = await  fetch('https://awesome-blogs-server.vercel.app/profile', {
                 credentials: 'include',
             });
@@ -16,13 +17,15 @@ function Header() {
             }
 
             const userInfoData = await response.json();
+            
             setUserInfo(userInfoData.username);
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching user info:', error);
         }
     }
 
-   await fetchData();
+    fetchData();
 }, []);
 
 
@@ -33,9 +36,14 @@ function Header() {
 
     });
     setUserInfo(null);
+    setLoading(false);
   }
-  const username = userInfo?.username;
+let username = "";
+  if(loading===false)
+ {  username = userInfo?.username;
 
+}
+if(!loading)
   return (
     <header>
       <Link to="/" className='logo'> Awesome Blogs</Link>
