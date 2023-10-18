@@ -3,15 +3,6 @@ import { createContext, useState, useEffect } from "react";
 export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
-    const [userInfo, setUserInfo] = useState(() => {
-        const savedUserInfo = JSON.parse(getCookie("userInfo"));
-        return savedUserInfo || {};
-    });
-
-    useEffect(() => {
-        setCookie("userInfo", JSON.stringify(userInfo), 7); // Expires in 7 days
-    }, [userInfo]);
-
     function setCookie(name, value, days) {
         const date = new Date();
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -28,11 +19,20 @@ export function UserContextProvider({ children }) {
                 cookie = cookie.substring(1);
             }
             if (cookie.indexOf(name) === 0) {
-                return cookie.substring(name.length, cookie.length);
+                return cookie.substring(name.length + 1, cookie.length);
             }
         }
         return "";
     }
+
+    const [userInfo, setUserInfo] = useState(() => {
+        const savedUserInfo = getCookie("userInfo");
+        return savedUserInfo ? JSON.parse(savedUserInfo) : {};
+    });
+
+    useEffect(() => {
+        setCookie("userInfo", JSON.stringify(userInfo), 7); // Expires in 7 days
+    }, [userInfo]);
 
     return (
         <UserContext.Provider value={{ userInfo, setUserInfo }}>
