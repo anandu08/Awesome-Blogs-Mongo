@@ -39,14 +39,21 @@ app.get("/test", (req, res) => {
 app.post("/register", async (req, res) => {
     const { username, password } = req.body;
     try {
-        await User.create({ username, password: bcrypt.hashSync(password, salt) });
-        res.send("User Created Successfully");
+        const user = await User.create({ username, password: bcrypt.hashSync(password, salt) });
+
+        jwt.sign({ username, id: user._id }, secret, {}, (err, token) => {
+            if (err) throw err;
+            res.cookie('token', token, { sameSite: 'None', secure: true }).json({
+                id: user._id,
+                username,
+            });
+        });
     }
     catch (error) {
         res.status(400).json(error);
     }
+});
 
-})
 app.post("/login", async (req, res) => {
     const { username, password } = req.body;
     try {
