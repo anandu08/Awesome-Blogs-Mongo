@@ -155,6 +155,7 @@ app.get('/post/:id', async (req, res) => {
 app.put('/edit', async (req, res) => {
 
 console.log(req.body);
+    console.log("Hi");
     console.log(req.cookies);
     const { token } = req.cookies;
     jwt.verify(token, secret, {}, async (err, info) => {
