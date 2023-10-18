@@ -67,7 +67,7 @@ export default function EditPost() {
         }
         data['cover'] = image_url;
 
-        const response = await fetch('https://awesome-blogs-server.vercel.app/edit', {
+        const response = await fetch('https://awesome-blogs-server.vercel.app/edit/', {
             method: 'PUT',
             body: JSON.stringify(data),
             credentials: 'include',
