@@ -61,10 +61,10 @@ app.post("/login", async (req, res) => {
             jwt.sign({ username, id: UserDoc._id }, secret, {}, (err, token) => {
                 if (err)
                     throw err;
-                  res.cookie('token', token, { sameSite: 'None', secure: true }).json({
-            id: UserDoc._id,
-            username,
-        });
+                res.cookie('token', token).json({
+                    id: UserDoc._id,
+                    username,
+                });
             })
         }
         else {
@@ -80,10 +80,9 @@ app.post("/login", async (req, res) => {
 
 app.get("/profile", (req, res) => {
     const { token } = req.cookies;
-    if(!token)
-    {
+    if (!token) {
         console.log("Not logged in");
-        return ;
+        return;
     }
     jwt.verify(token, secret, {}, (err, info) => {
         if (err) {
@@ -107,7 +106,7 @@ app.post('/post', (req, res) => {
             throw err;
 
         const { title, summary, content, cover } = req.body;
-        
+
         try {
             const PostDoc = await Post.create({
                 title: title,
@@ -155,9 +154,35 @@ app.get('/post/:id', async (req, res) => {
 app.put('/edit', async (req, res) => {
 
 
+    const { token } = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) throw err;
 
+        const { id, title, summary, content, cover } = req.body;
+        const postDoc = await Post.findById(id);
 
-   res.send("under Construction");
+        if (!postDoc) {
+            return res.json("No Post found ");
+
+        }
+        const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+        if (!isAuthor) {
+            return res.status(400).json('You are not the author!!!');
+        }
+        postDoc.title = title;
+        postDoc.summary = summary;
+        postDoc.content = content;
+        postDoc.cover = cover ? cover : postDoc.cover;
+
+        try {
+            await postDoc.save();
+            res.json(postDoc);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+    });
 
 });
 app.listen(process.env.PORT || 4000, () => {
