@@ -4,7 +4,7 @@ import { UserContext } from "./UserContext";
 
 function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
-  useEffect(() => {
+  useEffect( async () => {
     async function fetchData() {
         try {
             const response = await  fetch('https://awesome-blogs-server.vercel.app/profile', {
@@ -22,7 +22,7 @@ function Header() {
         }
     }
 
-    fetchData();
+   await fetchData();
 }, []);
 
 
