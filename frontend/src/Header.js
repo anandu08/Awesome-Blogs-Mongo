@@ -18,7 +18,7 @@ function Header() {
             }
 
             const userInfoData = await response.json();
-            setUserInfo(userInfoData.username);
+            setUserInfo(userInfoData);
         } catch (error) {
             console.error('Error fetching user info:', error);
         } finally {
