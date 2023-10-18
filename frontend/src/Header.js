@@ -4,6 +4,8 @@ import { UserContext } from "./UserContext";
 
 function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     async function fetchData() {
         try {
@@ -19,6 +21,8 @@ function Header() {
             setUserInfo(userInfoData.username);
         } catch (error) {
             console.error('Error fetching user info:', error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -41,27 +45,17 @@ function Header() {
       <Link to="/" className='logo'> Awesome Blogs</Link>
 
       <nav>
-        {username &&
-
+        {isLoading ? 'Loading...' : username ? (
           <>
-
             <Link to="/create"> Create a post</Link>
             <a onClick={logout}>Logout</a>
-
           </>
-        }
-        {
-          !username &&
+        ) : (
           <>
             <Link to="login">Login</Link>
             <Link to="register">Register</Link>
           </>
-        }
-
-
-
-
-
+        )}
       </nav>
     </header>)
 }
