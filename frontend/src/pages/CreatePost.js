@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState,useContext } from "react";
 import ReactQuill from "react-quill";
 import { Navigate } from 'react-router-dom';
 import 'react-quill/dist/quill.snow.css'
+import { LoadingContext } from "../LoadingContext";
 
 
 
@@ -22,16 +23,18 @@ const formats = [
     'link',
 ]
 export default function CreatePost() {
-
+    const { setLoading } = useContext(LoadingContext);
     const [title, setTitle] = useState('');
     const [summary, setSummary] = useState('')
     const [content, setContent] = useState('')
     const [files, setFile] = useState('');
     const [redirect, setRedirect] = useState(false);
+  
 
     async function createNew(event) {
+        setLoading(true);
         event.preventDefault();
-
+       
         const data = {
             title: title,
             summary: summary,
@@ -66,18 +69,25 @@ export default function CreatePost() {
             },
         });
 
-
+        setLoading(false)
 
         if (response.ok) {
             setRedirect(true);
         }
+        else{
+
+            return (<>Some Error occured please retry</>)
+        }
+       
     }
 
 
     if (redirect) {
         return (<Navigate to={'/'}></Navigate>)
     }
+   
     return (
+
         <form onSubmit={createNew}>
             <input type='title' placeholder={'Title'}
                 value={title}
@@ -96,6 +106,6 @@ export default function CreatePost() {
 
             <button style={{ marginTop: '5px' }}> Create Post</button>
         </form>
+
     );
 }
-

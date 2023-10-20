@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
 import ReactQuill from "react-quill";
 import { Navigate, useParams } from 'react-router-dom';
+import { LoadingContext } from "../LoadingContext";
 const modules = {
     toolbar: [
         [{ 'header': [1, 2, false] }],
@@ -18,7 +19,7 @@ const formats = [
 ]
 export default function EditPost() {
 
-
+    const { setLoading } = useContext(LoadingContext);
     const { id } = useParams();
     const [title, setTitle] = useState('');
     const [summary, setSummary] = useState('')
@@ -40,6 +41,7 @@ export default function EditPost() {
     }, [])
 
     async function edit(ev) {
+        setLoading(true)
         ev.preventDefault();
         const data = {
             id: id,
@@ -77,9 +79,12 @@ export default function EditPost() {
             },
         });
 
+        setLoading(false)
         if (response.ok) {
             setRedirect(true);
         }
+        else
+        return (<>Some error occured please retry</>)
     }
 
 

@@ -1,7 +1,10 @@
 import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
+import { LoadingContext } from "../LoadingContext";
 export default function Register() {
+
+    const { setLoading } = useContext(LoadingContext);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [redirect, setRedirect] = useState(false);
@@ -10,12 +13,15 @@ export default function Register() {
     async function register(event) {
 
         event.preventDefault();
-     const response = await fetch('https://awesome-blogs-server.vercel.app/register', {
-           method: 'POST',
+        setLoading(true)
+        const response = await fetch('https://awesome-blogs-server.vercel.app/register', {
+            method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
         })
+
+        setLoading(false)
         if (response.status !== 200) {
             alert("Registration Failed Consider trying with a different username");
         }
