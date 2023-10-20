@@ -9,15 +9,22 @@ export default function Posts() {
 
     useEffect(() => {
         setLoading(true);
-        fetch('https://awesome-blogs-server.vercel.app/posts').then(response => {
-            response.json().then(posts => {
-                setPosts(posts);
-                setLoading(false)
-
+        fetch('https://awesome-blogs-server.vercel.app/posts')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
             })
-        })
+            .then(posts => {
+                setPosts(posts);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                setLoading(false); // Make sure to set loading to false in case of an error
+            });
     }, []);
-
 
     if (posts.length === 0) {
         return <>No Posts found, Login to create one!!!</>;
