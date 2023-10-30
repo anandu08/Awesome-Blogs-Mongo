@@ -108,6 +108,7 @@ form.login, form.register{
   margin : 0 auto;
 
 }
+
 input{
   display:  block;
   margin-bottom: 5px;
@@ -188,3 +189,4 @@ div.post-page a.edit-btn{
   text-decoration: none;
   cursor: pointer;
 }
+
