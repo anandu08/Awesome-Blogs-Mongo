@@ -1,63 +1,64 @@
-
-
-*{
+* {
   box-sizing: border-box;
 }
-a{
+
+a {
   cursor: pointer;
 }
-main{
+
+main {
   padding: 10px;
-  max-width: 960px;
+  max-width: 1000px;
   margin: 0 auto;
 }
-img{
+
+img {
   max-width: 100%;
 }
-header{
+
+header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 50px;
   margin-top: 20px;
   align-items: center;
 }
-header a{
+
+header a {
   text-decoration: none;
   color: inherit;
- 
+
 }
-header a.logo{
+
+header a.logo {
   font-weight: bold;
   font-size: 1.6rem;
 }
-header nav{
-  display: flex;
-  gap:15px;
 
-}
-
-header nav{
+header nav {
   display: flex;
   gap: 15px;
 }
 
-.loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: transparent;
-  
-    z-index: 1000;
+header {
+  padding-bottom: 1em;
+  border-bottom: #333 1px solid;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: transparent;
+
+  z-index: 1000;
+}
 
 div.post {
   display: grid;
   grid-template-columns: 1fr 1fr;
-
-  margin-bottom: 30px;
-  background-color: #f5f5f5;
+  margin-bottom: 2em;
 }
 
 @media (min-width: 700px) {
@@ -67,11 +68,13 @@ div.post {
 }
 
 div.post img {
-
-
-  height: 220px;
+  height: 200px;
+  width: 250px;
 }
 
+img {
+  object-fit: cover;
+}
 
 div.post div.texts h2 {
   margin: 0;
@@ -84,7 +87,7 @@ div.post div.texts a {
 }
 
 
-p.info{
+p.info {
   margin: 6px 0;
   color: #888;
   font-size: .7rem;
@@ -93,24 +96,26 @@ p.info{
   gap: 10px;
 }
 
-div.post p.info span.author{
-  color:#333
+div.post p.info span.author {
+  color: #333
+}
+
+div.post p.summary {
+  margin: 6px 0;
+  line-height: 1.4rem;
 
 }
-div.post p.summary{
-margin: 6px 0;
-line-height: 1.4rem;
 
-}
-form.login, form.register{
+form.login,
+form.register {
 
   max-width: 400px;
-  margin : 0 auto;
+  margin: 0 auto;
 
 }
 
-input{
-  display:  block;
+input {
+  display: block;
   margin-bottom: 5px;
   width: 100%;
   padding: 5px 7px;
@@ -120,7 +125,8 @@ input{
   border-bottom: 1px solid #ccc;
 
 }
-button{
+
+button {
   width: 100%;
   display: block;
   border-radius: 5px;
@@ -129,30 +135,32 @@ button{
 
 }
 
-div.post-page div.image{
+div.post-page div.image {
 
 
-display: flex;
-overflow: hidden;
+  display: flex;
+  overflow: hidden;
 
-  
+
 }
-div.post-page div.image img{
+
+div.post-page div.image img {
   object-fit: cover;
-  object-position:center center;
+  object-position: center center;
   width: 100%;
 }
 
-div.post-page a{
+div.post-page a {
   color: #333;
 
 }
-div.post-page h1{
+
+div.post-page h1 {
   text-align: center;
   margin: 10px 0 5px;
 }
 
-div.post-page time{
+div.post-page time {
   text-align: center;
   display: block;
   font-size: .7rem;
@@ -160,7 +168,7 @@ div.post-page time{
 
 }
 
-div.post-page div.author{
+div.post-page div.author {
   text-align: center;
   margin-bottom: 20px;
   font-size: .7rem;
@@ -168,25 +176,26 @@ div.post-page div.author{
 
 }
 
-div.post-page div.content p{
-   line-height: 1.6rem;
+div.post-page div.content p {
+  line-height: 1.6rem;
 
 }
-div.edit-row{
+
+div.edit-row {
   text-align: center;
   margin-bottom: 20px;
 
 }
-div.post-page a.edit-btn{
+
+div.post-page a.edit-btn {
   background-color: #333;
   display: inline-flex;
 
   color: #fff;
   align-items: center;
-  gap:5px;
+  gap: 5px;
   padding: 7px 10px;
   border-radius: 5px;
   text-decoration: none;
   cursor: pointer;
 }
-

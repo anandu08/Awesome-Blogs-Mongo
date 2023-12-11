@@ -1,0 +1,22 @@
+.post-main {
+    display: flex;
+    padding-left: 2em;
+    text-align: left;
+    align-items: center;
+}
+
+.summary {
+    padding-top: 1em;
+    color: #2f2f2f;
+}
+
+.cover-image {
+    margin-left: 10em;
+    border: 1px solid #2f2f2f;
+    border-radius: 20px;
+}
+
+.texts {
+    
+    padding-left: 2em;
+}
